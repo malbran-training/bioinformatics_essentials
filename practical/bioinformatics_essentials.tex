@@ -33,6 +33,13 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \usepackage[breakable]{tcolorbox}
     \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
 
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
 
     % Basic figure setup, for now with no caption control since it's done
     % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
@@ -46,6 +53,8 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \DeclareCaptionFormat{nocaption}{}
     \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
 
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
     \usepackage{float}
     \floatplacement{figure}{H} % forces figures to be placed at the correct location
     \usepackage{xcolor} % Allow colors to be defined
@@ -60,39 +69,8 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     }
     \usepackage{upquote} % Upright quotes for verbatim code
     \usepackage{eurosym} % defines \euro
-
-    \usepackage{iftex}
-    \ifPDFTeX
-        \usepackage[T1]{fontenc}
-        \IfFileExists{alphabeta.sty}{
-              \usepackage{alphabeta}
-          }{
-              \usepackage[mathletters]{ucs}
-              \usepackage[utf8x]{inputenc}
-          }
-    \else
-        \usepackage{fontspec}
-        \usepackage{unicode-math}
-    \fi
-
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
     \usepackage{fancyvrb} % verbatim replacement that allows latex
-    \usepackage{grffile} % extends the file name processing of package graphics
-                         % to support a larger range
-    \makeatletter % fix for old versions of grffile with XeLaTeX
-    \@ifpackagelater{grffile}{2019/11/01}
-    {
-      % Do nothing on new versions
-    }
-    {
-      \def\Gread@@xetex#1{%
-        \IfFileExists{"\Gin@base".bb}%
-        {\Gread@eps{\Gin@base.bb}}%
-        {\Gread@@xetex@aux#1}%
-      }
-    }
-    \makeatother
-    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
-    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
 
     % The hyperref package gives us a pdf with properly built
     % internal navigation ('pdf bookmarks' for the table of contents,
@@ -103,8 +81,6 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \usepackage{titling}
     \usepackage{longtable} % longtable support required by pandoc >1.10
     \usepackage{booktabs}  % table support for pandoc > 1.12.2
-    \usepackage{array}     % table support for pandoc >= 2.11.3
-    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
     \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
     \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
                                 % normalem makes italics be italics, not underlines
@@ -136,9 +112,6 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \definecolor{ansi-white-intense}{HTML}{A1A6B2}
     \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
     \definecolor{ansi-default-inverse-bg}{HTML}{000000}
-
-    % common color for the border for error outputs.
-    \definecolor{outerrorbackground}{HTML}{FFDFDF}
 
     % commands and environments needed by pandoc snippets
     % extracted from the output of `pandoc -s`
@@ -200,8 +173,6 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
 
 
 
-
-
 % Pygments definitions
 \makeatletter
 \def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
@@ -214,73 +185,73 @@ postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{red}\hookrightarrow\space}
     \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
 \def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
 
-\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
-\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
-\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
-\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
-\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
-\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
-\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
-\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
-\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
-\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
-\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
-\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
-\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
-\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
-\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
-\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
-\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
-\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
-\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
-\@namedef{PY@tok@ge}{\let\PY@it=\textit}
-\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
-\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
-\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
-\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
-\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
-\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
-\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
-\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
-\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
-\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
-\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
-\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
-\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
-\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
-\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
 
 \def\PYZbs{\char`\\}
 \def\PYZus{\char`\_}
@@ -490,7 +461,7 @@ followed by the \texttt{Enter} key:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-su\PY{+w}{ }bioinf
+su bioinf
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -577,7 +548,7 @@ Let's check if conda is installed:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }\PYZhy{}\PYZhy{}version
+conda \PYZhy{}\PYZhy{}version
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -589,9 +560,7 @@ installed.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-Command\PY{+w}{ }\PY{l+s+s1}{\PYZsq{}conda\PYZsq{}}\PY{+w}{ }not\PY{+w}{ }found,\PY{+w}{ }did\PY{+w}{ }you\PY{+w}{ }mean:
-
-Try:\PY{+w}{ }sudo\PY{+w}{ }apt\PY{+w}{ }install\PY{+w}{ }\PYZlt{}deb\PY{+w}{ }name\PYZgt{}
+Command \PY{l+s+s1}{\PYZsq{}conda\PYZsq{}} not found.
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -612,7 +581,7 @@ In summary you need to run the following commands:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-mkdir\PY{+w}{ }\PYZhy{}p\PY{+w}{ }\PYZti{}/miniconda3
+mkdir \PYZhy{}p \PYZti{}/miniconda3
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -629,8 +598,8 @@ mkdir\PY{+w}{ }\PYZhy{}p\PY{+w}{ }\PYZti{}/miniconda3
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-wget\PY{+w}{ }https://repo.anaconda.com/miniconda/Miniconda3\PYZhy{}latest\PYZhy{}Linux\PYZhy{}x86\PYZus{}64.sh\PY{+w}{ }\PY{l+s+se}{\PYZbs{}\PYZbs{}}
-\PYZhy{}O\PY{+w}{ }\PYZti{}/miniconda3/miniconda.sh
+wget https://repo.anaconda.com/miniconda/Miniconda3\PYZhy{}latest\PYZhy{}Linux\PYZhy{}x86\PYZus{}64.sh \PY{l+s+se}{\PYZbs{}\PYZbs{}}
+\PYZhy{}O \PYZti{}/miniconda3/miniconda.sh
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -645,7 +614,7 @@ wget\PY{+w}{ }https://repo.anaconda.com/miniconda/Miniconda3\PYZhy{}latest\PYZhy
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-bash\PY{+w}{ }\PYZti{}/miniconda3/miniconda.sh\PY{+w}{ }\PYZhy{}b\PY{+w}{ }\PYZhy{}p\PY{+w}{ }\PYZti{}/miniconda3
+bash \PYZti{}/miniconda3/miniconda.sh \PYZhy{}b \PYZhy{}p \PYZti{}/miniconda3
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -653,12 +622,12 @@ bash\PY{+w}{ }\PYZti{}/miniconda3/miniconda.sh\PY{+w}{ }\PYZhy{}b\PY{+w}{ }\PYZh
 \texttt{miniconda.sh}, \texttt{-b} means run the install in batch mode
 (without manual intervention) and \texttt{-p} specifies where on the
 computer to put the miniconda installation and in this case it will be
-stored in \textasciitilde/mininconda3.
+stored in \textasciitilde{}/mininconda3.
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-ls\PY{+w}{ }\PYZti{}/miniconda3
+ls \PYZti{}/miniconda3
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -675,7 +644,7 @@ ls\PY{+w}{ }\PYZti{}/miniconda3
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-rm\PY{+w}{ }\PYZhy{}rf\PY{+w}{ }\PYZti{}/miniconda3/miniconda.sh
+rm \PYZhy{}rf \PYZti{}/miniconda3/miniconda.sh
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -690,7 +659,7 @@ rm\PY{+w}{ }\PYZhy{}rf\PY{+w}{ }\PYZti{}/miniconda3/miniconda.sh
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYZti{}/miniconda3/bin/conda\PY{+w}{ }init\PY{+w}{ }bash
+\PYZti{}/miniconda3/bin/conda init bash
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -699,7 +668,7 @@ rm\PY{+w}{ }\PYZhy{}rf\PY{+w}{ }\PYZti{}/miniconda3/miniconda.sh
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }\PYZhy{}\PYZhy{}version
+conda \PYZhy{}\PYZhy{}version
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -727,7 +696,7 @@ software package.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }install\PY{+w}{ }bwa
+conda install bwa
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -742,7 +711,7 @@ can specify the channel with the \texttt{-c} option of the
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }install\PY{+w}{ }\PYZhy{}c\PY{+w}{ }bioconda\PY{+w}{ }bwa
+conda install \PYZhy{}c bioconda bwa
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -752,22 +721,22 @@ automatically searched by conda using the commands:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }config\PY{+w}{ }\PYZhy{}\PYZhy{}add\PY{+w}{ }channels\PY{+w}{ }default
-conda\PY{+w}{ }config\PY{+w}{ }\PYZhy{}\PYZhy{}add\PY{+w}{ }channels\PY{+w}{ }bioconda
-conda\PY{+w}{ }config\PY{+w}{ }\PYZhy{}\PYZhy{}add\PY{+w}{ }channels\PY{+w}{ }conda\PYZhy{}forge
+conda config \PYZhy{}\PYZhy{}add channels default
+conda config \PYZhy{}\PYZhy{}add channels bioconda
+conda config \PYZhy{}\PYZhy{}add channels conda\PYZhy{}forge
 \end{Verbatim}
 \end{tcolorbox}
 
-    This means that \texttt{conda} will first search the \texttt{default}
-channel, followed by the \texttt{bioconda} channel, followed by the
-\texttt{conda-forge} channel until it finds the given package.
+    When you add a channel to your conda channel list it is automatically
+added to the top of the list. So with the commands above the order to be
+searched will be cond-forge, then bioconda and then default.
 
 Try installing another bioinformatics software:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }install\PY{+w}{ }mafft
+conda install mafft
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -787,7 +756,7 @@ You can create a conda environment with:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }create\PY{+w}{ }\PYZhy{}n\PY{+w}{ }samtools\PYZhy{}1.17\PY{+w}{ }\PY{n+nv}{samtools}\PY{o}{=}\PY{l+m}{1}.17
+conda create \PYZhy{}n samtools\PYZhy{}1.17 \PY{n+nv}{samtools}\PY{o}{=}\PY{l+m}{1}.17
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -803,7 +772,7 @@ activating the environment that contains the software:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }activate\PY{+w}{ }samtools\PYZhy{}1.17
+conda activate samtools\PYZhy{}1.17
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -815,7 +784,7 @@ Check that \texttt{samtools} is installed:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-samtools\PY{+w}{ }\PYZhy{}h
+samtools \PYZhy{}h
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -824,7 +793,7 @@ samtools\PY{+w}{ }\PYZhy{}h
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }deactivate
+conda deactivate
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -833,7 +802,7 @@ conda\PY{+w}{ }deactivate
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }info\PY{+w}{ }\PYZhy{}\PYZhy{}envs
+conda info \PYZhy{}\PYZhy{}envs
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -842,7 +811,7 @@ conda\PY{+w}{ }info\PY{+w}{ }\PYZhy{}\PYZhy{}envs
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }info\PY{+w}{ }\PYZhy{}\PYZhy{}envs\PY{+w}{ }\PY{p}{|}\PY{+w}{ }grep\PY{+w}{ }\PYZhy{}i\PY{+w}{ }samtools
+conda info \PYZhy{}\PYZhy{}envs \PY{p}{|} grep \PYZhy{}i samtools
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -851,7 +820,7 @@ conda\PY{+w}{ }info\PY{+w}{ }\PYZhy{}\PYZhy{}envs\PY{+w}{ }\PY{p}{|}\PY{+w}{ }gr
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }list\PY{+w}{ }\PYZhy{}n\PY{+w}{ }samtools\PYZhy{}1.17
+conda list \PYZhy{}n samtools\PYZhy{}1.17
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -865,7 +834,7 @@ environment you can use:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }update\PY{+w}{ }\PYZhy{}\PYZhy{}all
+conda update \PYZhy{}\PYZhy{}all
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -920,14 +889,15 @@ A list of useful conda commands can be found at
 
 Nextflow is a workflow management system (consisting of a domain
 specific language and workflow engine) that can be used to write and run
-data-intensive bioinformatics workflows.
+data-intensive bioinformatics workflows (i.e.~pipelines).
 
 One of the main advantages of Nextflow is that it provides an
-abstraction between the workflow's functional logic and the underlying
-execution system (or runtime). Thus, it is possible to write a workflow
-that runs seamlessly on your computer, a cluster, or the cloud, without
-being modified. You simply define the target execution platform (local,
-lsf, aws etc.) in a configuration file.
+abstraction between the workflow's functional logic (what the workflow
+does) and the underlying execution system (how the workflow runs). Thus,
+it is possible to write a workflow that runs seamlessly on your
+computer, a cluster, or the cloud, without being modified. You simply
+define the target execution platform (local, lsf, aws etc.) in a
+configuration file.
 
 With Nextflow you can write a pipeline once and run it everywhere!
 
@@ -937,7 +907,7 @@ in the terminal window:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-su\PY{+w}{ }manager
+su manager
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -962,7 +932,7 @@ environment.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }create\PY{+w}{ }\PYZhy{}n\PY{+w}{ }nextflow\PY{+w}{ }\PY{n+nv}{nextflow}\PY{o}{=}\PY{l+m}{23}.04.1
+conda create \PYZhy{}n nextflow \PY{n+nv}{nextflow}\PY{o}{=}\PY{l+m}{23}.04.1
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -971,7 +941,7 @@ conda\PY{+w}{ }create\PY{+w}{ }\PYZhy{}n\PY{+w}{ }nextflow\PY{+w}{ }\PY{n+nv}{ne
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }activate\PY{+w}{ }nextflow
+conda activate nextflow
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1003,19 +973,18 @@ check that it is installed type:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-singularity\PY{+w}{ }\PYZhy{}h
+singularity \PYZhy{}h
 \end{Verbatim}
 \end{tcolorbox}
 
-    Installing \texttt{singularity} will usually require root or admin
-privileges and the instructions will vary depending on your operating
-system. It is already installed on the computer you are using and here
-are the commands that were used to install it (do not run these commands
-here).
+    Installing \texttt{singularity} may require root or admin privileges so
+the instructions will vary depending on your operating system. It is
+already installed on the computer you are using and here are the
+commands that were used to install it (do not run these commands here).
 
     \texttt{wget\ https://github.com/sylabs/singularity/releases/download/v3.10.2/singularity-ce\_3.10.2-jammy\_amd64.deb}~\\
-\texttt{sudo\ dpkg\ -i\ singularity-ce\_3.9.8-focal\_amd64.deb}~\\
-\texttt{rm\ singularity-ce\_3.9.8-focal\_amd64.deb}
+\texttt{sudo\ dpkg\ -i\ singularity-ce\_3.10.2-jammy\_amd64.deb}~\\
+\texttt{rm\ singularity-ce\_3.10.2-jammy\_amd64.deb}
 
     \hypertarget{the-nf-core-project}{%
 \subsection{The nf-core project}\label{the-nf-core-project}}
@@ -1041,7 +1010,7 @@ out of the scope of this tutorial.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-conda\PY{+w}{ }install\PY{+w}{ }nf\PYZhy{}core
+conda install nf\PYZhy{}core
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1051,7 +1020,7 @@ help:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-nf\PYZhy{}core\PY{+w}{ }\PYZhy{}\PYZhy{}help
+nf\PYZhy{}core \PYZhy{}\PYZhy{}help
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1065,12 +1034,12 @@ you have the latest version.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-nf\PYZhy{}core\PY{+w}{ }list
+nf\PYZhy{}core list
 \end{Verbatim}
 \end{tcolorbox}
 
     To browse the available nf-core pipelines online visit
-(https://nf-co.re/pipelines){[}https://nf-co.re/pipelines{]}
+\url{https://nf-co.re/pipelines}
 
     \hypertarget{exercises}{%
 \subsection{Exercises}\label{exercises}}
@@ -1118,7 +1087,7 @@ below in the terminal window:
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PY{n+nb}{cd}\PY{+w}{ }\PYZti{}/course\PYZus{}data/bioinformatics\PYZus{}essentials/data
+\PY{n+nb}{cd} \PYZti{}/course\PYZus{}data/bioinformatics\PYZus{}essentials/data
 \PY{n+nb}{pwd}
 \end{Verbatim}
 \end{tcolorbox}
@@ -1194,7 +1163,7 @@ instructions below to set up and configure Nextflow Tower.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-\PY{n+nb}{export}\PY{+w}{ }\PY{n+nv}{TOWER\PYZus{}ACCESS\PYZus{}TOKEN}\PY{o}{=}eyxxxxxxxxxxxxxxxQ1ZTE
+\PY{n+nb}{export} \PY{n+nv}{TOWER\PYZus{}ACCESS\PYZus{}TOKEN}\PY{o}{=}eyxxxxxxxxxxxxxxxQ1ZTE
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1227,8 +1196,8 @@ used in the pipelines.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-mkdir\PY{+w}{ }\PYZti{}/singularity
-\PY{n+nb}{export}\PY{+w}{ }\PY{n+nv}{NXF\PYZus{}SINGULARITY\PYZus{}CACHEDIR}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}\PYZti{}/singularity\PYZdq{}}
+mkdir \PYZti{}/singularity
+\PY{n+nb}{export} \PY{n+nv}{NXF\PYZus{}SINGULARITY\PYZus{}CACHEDIR}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}\PYZti{}/singularity\PYZdq{}}
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1237,8 +1206,8 @@ mkdir\PY{+w}{ }\PYZti{}/singularity
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-nf\PYZhy{}core\PY{+w}{ }download\PY{+w}{ }\PYZhy{}\PYZhy{}compress\PY{+w}{ }none\PY{+w}{ }\PYZhy{}\PYZhy{}container\PYZhy{}system\PY{+w}{ }singularity\PY{+w}{ }\PY{l+s+se}{\PYZbs{}\PYZbs{}}
-\PYZhy{}\PYZhy{}revision\PY{+w}{ }\PY{l+m}{1}.0.0\PY{+w}{ }bactmap
+nf\PYZhy{}core download \PYZhy{}\PYZhy{}compress none \PYZhy{}\PYZhy{}container\PYZhy{}system singularity \PY{l+s+se}{\PYZbs{}\PYZbs{}}
+\PYZhy{}\PYZhy{}revision \PY{l+m}{1}.0.0 bactmap
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1255,7 +1224,7 @@ install.
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-ls\PY{+w}{ }nf\PYZhy{}core\PYZhy{}bactmap\PYZus{}1.0.0/1\PYZus{}0\PYZus{}0/
+ls nf\PYZhy{}core\PYZhy{}bactmap\PYZus{}1.0.0/1\PYZus{}0\PYZus{}0/
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1276,13 +1245,14 @@ and a header row as shown in the example below.
 \texttt{G18756254,fastqs/G18756254\_1.fastq.gz,fastqs/G18756254\_2.fastq.gz}~\\
 \texttt{G18582006,fastqs/G18582006\_1.fastq.gz,fastqs/G18582006\_2.fastq.gz}
 
-    We have already created a samplesheet file for the data from the SNP
-Phylogeny tutorial
+    Let's run the bactmap pipeline on our samples from the snp-phylogeny
+tutorial. To get you started we have already created a samplesheet file
+for this data. Take a look at it:
 
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-cat\PY{+w}{ }samplesheet.csv
+cat samplesheet.csv
 \end{Verbatim}
 \end{tcolorbox}
 
@@ -1291,46 +1261,62 @@ cat\PY{+w}{ }samplesheet.csv
     \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
 \prompt{In}{incolor}{ }{\boxspacing}
 \begin{Verbatim}[commandchars=\\\{\}]
-nextflow\PY{+w}{ }run\PY{+w}{ }nf\PYZhy{}core\PYZhy{}bactmap\PYZus{}1.0.0/1\PYZus{}0\PYZus{}0/main.nf\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
-\PYZhy{}\PYZhy{}input\PY{+w}{ }samplesheet.csv\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
-\PYZhy{}\PYZhy{}outdir\PY{+w}{ }my\PYZus{}results\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
-\PYZhy{}\PYZhy{}reference\PY{+w}{ }chromosome.fasta\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
-\PYZhy{}\PYZhy{}iqtree\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
-\PYZhy{}w\PY{+w}{ }my\PYZus{}results/work\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
-\PYZhy{}profile\PY{+w}{ }singularity\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
-\PYZhy{}resume\PY{+w}{ }\PY{l+s+se}{\PYZbs{}}
+nextflow run nf\PYZhy{}core\PYZhy{}bactmap\PYZus{}1.0.0/1\PYZus{}0\PYZus{}0/main.nf \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}\PYZhy{}input samplesheet.csv \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}\PYZhy{}outdir my\PYZus{}results \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}\PYZhy{}reference chromosome.fasta \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}\PYZhy{}iqtree \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}w my\PYZus{}results/work \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}profile singularity \PY{l+s+se}{\PYZbs{}}
+\PYZhy{}resume \PY{l+s+se}{\PYZbs{}}
 \PYZhy{}with\PYZhy{}tower
 \end{Verbatim}
 \end{tcolorbox}
 
-    The pipeline steps that are to be run are written in the nextflow
-language and are found in the file
-\texttt{nf-core-bactmap\_1.0.0/1\_0\_0/main.nf}. Let's look at the
-options, these can be seperated into two types.
+    The pipeline steps are written in the nextflow language and are found in
+the file \texttt{nf-core-bactmap\_1.0.0/1\_0\_0/main.nf}. Let's look at
+the options, these can be seperated into two types.
 
 The first set of options (starting with \texttt{-\/-}) are specific to
-the \texttt{nf-core/bactmap} pipeline: * \texttt{-\/-input} specifies
-the samplesheet.csv file that contains the fastq file information for
-our samples\\
-* \texttt{-\/-output} specifies the output where the results from the
-pipeline will be saved\\
-* \texttt{-\/-reference} specifies a fasta file of the reference
-sequence\\
-* \texttt{-\/-iqtree} specifies to build a tree using the IQ-TREE
+the \texttt{nf-core/bactmap} pipeline:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{-\/-input} specifies the samplesheet.csv file that contains
+  the fastq file information for our samples\\
+\item
+  \texttt{-\/-output} specifies the output where the results from the
+  pipeline will be saved\\
+\item
+  \texttt{-\/-reference} specifies a fasta file of the reference
+  sequence\\
+\item
+  \texttt{-\/-iqtree} specifies to build a tree using the IQ-TREE
+\end{itemize}
 
 The full set of parameters for the bactmap pipeline can be found at
 \url{https://nf-co.re/bactmap/1.0.0/parameters/}.
 
 The second set of options (starting with \texttt{-}) are specific to the
-nextflow engine: * \texttt{-w} option tells nextflow where to store the
-intermediate files produced by the pipeline\\
-* \texttt{-profile} option tells nextflow to use the singularity
-profile\\
-* \texttt{-resume} option tells nextflow to run the script using the
-cached results\\
-* \texttt{-with-tower} option tells nextflow to send information about
-the pipeline run to Nextflow Tower using the TOWER\_ACCESS\_TOKEN set
-earlier
+nextflow engine:
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{-w} option tells nextflow where to store the intermediate
+  files produced by the pipeline\\
+\item
+  \texttt{-profile} option tells nextflow to use the singularity
+  profile\\
+\item
+  \texttt{-resume} option tells nextflow to run the script using the
+  cached results\\
+\item
+  \texttt{-with-tower} option tells nextflow to send information about
+  the pipeline run to Nextflow Tower using the TOWER\_ACCESS\_TOKEN set
+  earlier
+\end{itemize}
 
     \hypertarget{nextflow-profiles}{%
 \subsubsection{Nextflow profiles}\label{nextflow-profiles}}

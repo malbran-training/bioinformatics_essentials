@@ -1,0 +1,4 @@
+sample,fastq_1,fastq_2
+ERR5243693,~/course_data/snp-phylogeny/data/fastq/ERR5243693_1.fastq.gz,~/course_data/snp-phylogeny/data/fastq/ERR5243693_2.fastq.gz
+ERR5243695,~/course_data/snp-phylogeny/data/fastq/ERR5243695_1.fastq.gz,~/course_data/snp-phylogeny/data/fastq/ERR5243695_2.fastq.gz
+ERR5243699,~/course_data/snp-phylogeny/data/fastq/ERR5243699_1.fastq.gz,~/course_data/snp-phylogeny/data/fastq/ERR5243699_2.fastq.gz
